@@ -101,7 +101,7 @@
 												<a href="">Account</a>
 												<ul class="dropdown">
 												<?php if (isset($_SESSION['email']) && $_SESSION['email'] === 'admin@gmail.com'): ?>
-												<li><a href="admin.php">Add Book</a></li>
+												<li><a href="admin.php">Reservation & Book</a></li>
 												<?php endif; ?>	
 												<?php if (isset($_SESSION['email'])): ?>
 												<li><a onclick="window.location.href='reserbook.php';">Reservation</a></li>
@@ -251,29 +251,43 @@ input[type="submit"]:active {
 <thead>
 	<tr>
 		<th>  </th>
-		<th> Author </th>
 		<th> Title </th>
+		<th> Author </th>
 		<th> Action </th>
 	</tr>
 </thead></center>
 <tbody>
-	<?php
-		include('conn.php');
-		if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };
-		$start_from = ($page-1) * 8; 		
-		$result = $con->prepare("SELECT * FROM booklist ORDER BY book_id ASC LIMIT $start_from, 8");
-		$result->execute();
-		for($i=0; $row = $result->fetch(); $i++){
-	?>
-	<tr class="record">
-		<td><?php echo $row['book_id']; ?></td>
-		<td><?php echo $row['author']; ?></td>
+<?php
+include('conn.php');
+
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+} else {
+    $page = 1;
+}
+
+$start_from = ($page - 1) * 8;
+
+// Update query to filter out reserved books
+$sql = "SELECT * FROM booklist WHERE status='available' ORDER BY book_id ASC LIMIT $start_from, 8";
+$result = $con->prepare($sql);
+$result->execute();
+
+while ($row = $result->fetch()) {
+?>
+    <tr class="record">
+        <td><?php echo $row['book_id']; ?></td>
 		<td><?php echo $row['title']; ?></td>
-        <td><input type="checkbox" name="selected_books[]" value="<?php echo $row['book_id']; ?>"></td>
-	</tr>
-	<?php
-		}
-	?>
+        <td><?php echo $row['author']; ?></td>
+        
+        <td>
+            <input type="checkbox" name="selected_books[]" value="<?php echo $row['book_id']; ?>">
+        </td>
+    </tr>
+<?php
+}
+?>
+
 </tbody>
 </table>
 <script>
