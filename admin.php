@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -143,7 +147,7 @@ if ($connection->connect_error) {
 $sql = "SELECT reservation.*, elib.fullname, elib.course, booklist.title, booklist.author, booklist.about, booklist.status
         FROM reservation 
         JOIN elib ON reservation.user_id = elib.user_id
-        JOIN booklist ON reservation.selected_books = booklist.title"; // Assuming `selected_books` stores book titles
+        JOIN booklist ON reservation.selected_books = booklist.title"; 
 
 $result = $connection->query($sql);
 

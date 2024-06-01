@@ -74,7 +74,7 @@ session_start();
 										<a href="">Account</a>
 										<ul class="dropdown">
 											<?php if (isset($_SESSION['email'])): ?>
-												<li><a onclick="window.location.href='reserbook.php';">Profile</a></li>
+												<li><a onclick="window.location.href='reserbook.php';">Reservation</a></li>
 												<li><a onclick="window.location.href='logout.php';">Log-out</a></li>
                								    <?php else: ?>
                							        <li><a onclick="window.location.href='login.php';">Log-in</a></li>

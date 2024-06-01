@@ -37,7 +37,7 @@ CREATE TABLE booklist (
 ('Don Quixote', 'Miguel de Cervantes', 'A satirical novel following the adventures of a nobleman who becomes obsessed with chivalric romance.'),
 ('War and Peace', 'Leo Tolstoy', 'An epic novel set during the Napoleonic Wars, exploring themes of love, war, and the human condition.');
 
-ALTER TABLE booklist ADD COLUMN status VARCHAR(25) DEFAULT 'available';
+ALTER TABLE reservation ADD COLUMN status VARCHAR(25) DEFAULT 'available';
 JOIN booklist ON reservation.selected_books = booklist.book_id
 ALTER TABLE elib CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ALTER TABLE booklist CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;

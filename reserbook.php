@@ -143,43 +143,55 @@
 <h2>Reservation Data</h2>
 
 <?php
-			$servername = "localhost";
-			$username = "root";
-			$password = "";
-			$dbname = "e-library";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "e-library";
 
-			$connection = new mysqli($servername, $username, $password, $dbname);
+$connection = new mysqli($servername, $username, $password, $dbname);
 
-			if ($connection->connect_error) {
-				die("Connection failed: " . $connection->connect_error);
-			}
-			$sql = "SELECT reservation.*, elib.*
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+$userId = $_SESSION['id'];  // Assume user ID is stored in session
+
+$sql = "SELECT reservation.*, elib.fullname, elib.course, booklist.title, booklist.author, booklist.about, booklist.status
         FROM reservation 
-        JOIN elib ON reservation.user_id = elib.user_id 
-        WHERE elib.user_id = " . $_SESSION['id'];
-			
+        JOIN elib ON reservation.user_id = elib.user_id
+        JOIN booklist ON reservation.selected_books = booklist.title
+		WHERE reservation.user_id = $userId AND (booklist.status = 'available' OR booklist.status = 'reserved')"; 
 
-			$result = $connection->query($sql);
+$result = $connection->query($sql);
 
-			if ($result->num_rows > 0) {
-				echo "<table><tr><th>Title</th><th>Time</th><th>Date</th><th>Actions</th></tr>";
-				while ($row = $result->fetch_assoc()) {
-					echo "<tr>
-						<td>" . $row["selected_books"] . "</td>
-						<td>" . $row["timess"] . "</td>
-						<td>" . $row["dates"] . "</td>
-						<td>
-							<a class='btn btn error' href='delete.php?delete=" . $row['reservation_id'] . "'>delete</a> | 
-							<a href='edit.php?edit=" . $row['reservation_id'] . "'>edit</a>
-						</td>
-					</tr>";
-				}
-				echo "</table>";
-			} else {
-				echo "0 results";
-			}
-			$connection->close();
-			?>
+if ($result->num_rows > 0) {
+    echo "<table>
+    <tr>
+    <th>Title</th>
+    <th>Time</th>
+    <th>Date</th>
+    <th>Action</th>
+    </tr>";
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+        <td>" . $row["title"] . "</td>
+        <td>" . $row["timess"] . "</td>
+        <td>" . $row["dates"] . "</td>
+        <td>
+            <a class='btn btn-danger' href='delete.php?delete=" . $row['reservation_id'] . "'>delete</a>
+        </td>
+        </tr>";
+		if ($row["status"] == "reserved") {
+			echo "<tr><td colspan='6' style='color: green; text-align: center;'>Book Successfully Reserved. Kindly get the book on the right time.</td></tr>";
+		}
+    }
+	
+    echo "</table>";
+} else {
+    echo "0 results";    
+}
+$connection->close();
+?>
+
 			
 										
 

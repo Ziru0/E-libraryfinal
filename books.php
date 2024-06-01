@@ -84,8 +84,7 @@
     									  ></path></g>
 												 </svg>
 												 <input class="input" type="search" id="searchInput" placeholder="Search">
-												 <button type="button" class="button1" onclick="searchAndHighlight()">Search</button>
-													
+ 												   <button type="button" class="button1" onclick="searchAndHighlight()">Search</button>
 								</div></li>	
 							</ul>
 						</div>
