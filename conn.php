@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $port = 3306;
-$dbname = "e-library"; 
+$dbname = "elibrary"; 
 $username = "root";     
 $password = "";     
 

@@ -146,7 +146,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "e-library";
+$dbname = "elibrary";
 
 $connection = new mysqli($servername, $username, $password, $dbname);
 
